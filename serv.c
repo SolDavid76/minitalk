@@ -26,29 +26,26 @@ int	ft_strlen(char *str)
 	return (i);
 }
 
-char	*ft_realloc(char *str)
+char	*ft_recalloc(char *str, int size, int cpy)
 {
 	char	*res;
 	int		i;
 
-	res = malloc(sizeof(char) * (ft_strlen(str) + BUFFER_SIZE + 1));
+	res = malloc(sizeof(char) * (size + 1));
 	if (!res)
 	{
-		free(msg);
+		free(str);
 		exit(1);
 	}
 	i = 0;
-	while (str[i])
+	while (str[i] && cpy)
 	{
 		res[i] = str[i];
 		i++;
 	}
-	while (i < BUFFER_SIZE)
-	{
-		res[i] = 0;
-		i++;
-	}
-	return (free(msg), res);
+	while (i < size)
+		res[i++] = 0;
+	return (free(str), res);
 }
 
 void	handler(int signal)
@@ -60,16 +57,13 @@ void	handler(int signal)
 	res += (signal == SIGUSR1) << n--;
 	if (n == -1)
 	{
-		if (i == BUFFER_SIZE)
-			msg = ft_realloc(msg);
+		if (i % BUFFER_SIZE == 0)
+			msg = ft_recalloc(msg, i + BUFFER_SIZE, 1);
 		msg[i] = res;
 		if (res == '\0')
 		{
 			write(1, msg, ft_strlen(msg));
-			free(msg);
-			msg = malloc(sizeof(char) * (BUFFER_SIZE + 1));
-			if (!msg)
-				exit(1);
+			msg = ft_recalloc(msg, i + BUFFER_SIZE, 0);
 			i = 0;
 		}
 		else
