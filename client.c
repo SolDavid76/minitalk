@@ -6,13 +6,29 @@
 /*   By: djanusz <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 14:40:24 by djanusz           #+#    #+#             */
-/*   Updated: 2023/02/15 16:37:08 by djanusz          ###   ########.fr       */
+/*   Updated: 2023/02/16 15:36:53 by djanusz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-static int	ft_atoi(char *str)
+void	ft_send_char(int pid, char c)
+{
+	int	i;
+
+	i = 7;
+	while (i + 1)
+	{
+		if (c >> i & 1)
+			kill(pid, SIGUSR1);
+		else
+			kill(pid, SIGUSR2);
+		usleep(25);
+		i--;
+	}
+}
+
+int	ft_atoi(char *str)
 {
 	int	sign;
 	int	res;
@@ -40,25 +56,15 @@ static int	ft_atoi(char *str)
 
 int	main(int ac, char **av)
 {
+	int	pid;
 	int	i;
-	int	j;
 
-	if (ac != 4)
+	if (ac != 3)
 		return (1);
 	i = 0;
+	pid = ft_atoi(av[1]);
 	while (av[2][i])
-	{
-		j = 7;
-		while (j + 1)
-		{
-			if (av[2][i] >> j & 1)
-				kill(ft_atoi(av[1]), SIGUSR1);
-			else
-				kill(ft_atoi(av[1]), SIGUSR2);
-			usleep(ft_atoi(av[3]));
-			j--;
-		}
-		i++;
-	}
+		ft_send_char(pid, av[2][i++]);
+	ft_send_char(pid, 0);
 	return (0);
 }
