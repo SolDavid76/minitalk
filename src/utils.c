@@ -1,31 +1,73 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   client.c                                           :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: djanusz <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: djanusz <djanusz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/15 14:40:24 by djanusz           #+#    #+#             */
-/*   Updated: 2023/02/16 15:36:53 by djanusz          ###   ########.fr       */
+/*   Created: 2023/02/17 10:59:20 by djanusz           #+#    #+#             */
+/*   Updated: 2023/02/22 17:38:05 by djanusz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-void	ft_send_char(int pid, char c)
+void	ft_putchar(char c)
+{
+	write(1, &c, 1);
+}
+
+int	ft_strlen(char *str)
 {
 	int	i;
 
-	i = 7;
-	while (i + 1)
+	i = 0;
+	if (!str)
+		return (i);
+	while (str[i])
+		i++;
+	return (i);
+}
+
+void	ft_putnbr(int n)
+{
+	int			digit;
+	long int	nb;
+
+	nb = n;
+	if (nb < 0)
 	{
-		if (c >> i & 1)
-			kill(pid, SIGUSR1);
-		else
-			kill(pid, SIGUSR2);
-		usleep(25);
-		i--;
+		nb = -nb;
+		ft_putchar('-');
 	}
+	if (nb < 10)
+		ft_putchar(nb + 48);
+	else
+	{
+		digit = nb % 10;
+		nb /= 10;
+		ft_putnbr(nb);
+		ft_putchar(digit + 48);
+	}
+}
+
+char	*ft_strjoin(char *str, char c)
+{
+	char	*res;
+	int		i;
+
+	res = malloc(sizeof(char) * (ft_strlen(str) + 2));
+	if (!res)
+		return (0);
+	i = 0;
+	while (str && str[i])
+	{
+		res[i] = str[i];
+		i++;
+	}
+	res[i++] = c;
+	res[i] = '\0';
+	return (free(str), res);
 }
 
 int	ft_atoi(char *str)
@@ -52,19 +94,4 @@ int	ft_atoi(char *str)
 		i++;
 	}
 	return (sign * res);
-}
-
-int	main(int ac, char **av)
-{
-	int	pid;
-	int	i;
-
-	if (ac != 3)
-		return (1);
-	i = 0;
-	pid = ft_atoi(av[1]);
-	while (av[2][i])
-		ft_send_char(pid, av[2][i++]);
-	ft_send_char(pid, 0);
-	return (0);
 }
