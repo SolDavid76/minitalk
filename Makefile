@@ -28,13 +28,19 @@ CFLAGS		= -Wall -Wextra -Werror
 
 INCS		= -I ./include/
 
+TIMEOUT		= -D TIMEOUT=1
+
 all:		${OBJS_DIR} ${NAME}
 
-${NAME}:	${OBJS_SRV} ${OBJS_CLT}
-			${CC} ${FLAGS} ${OBJS_SRV} -o ${NAME_SRV}
-			${CC} ${FLAGS} ${OBJS_CLT} -o ${NAME_CLT}
+${NAME}:	${NAME_SRV} ${NAME_CLT}
 
-${OBJS_DIR}:
+${NAME_SRV}	: ${OBJS_SRV}
+			${CC} ${CFLAGS} ${OBJS_SRV} -o ${NAME_SRV}
+
+${NAME_CLT}	: ${OBJS_CLT}
+			${CC} ${CFLAGS} ${OBJS_CLT} ${TIMEOUT} -o ${NAME_CLT}
+
+${OBJS_DIR}	:
 			mkdir ${OBJS_DIR}
 
 ${OBJS_DIR}%.o: ${SRCS_DIR}%.c

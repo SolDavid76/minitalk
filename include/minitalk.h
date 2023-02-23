@@ -6,12 +6,15 @@
 /*   By: djanusz <djanusz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 11:45:10 by djanusz           #+#    #+#             */
-/*   Updated: 2023/02/22 17:37:28 by djanusz          ###   ########.fr       */
+/*   Updated: 2023/02/23 11:53:47 by djanusz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINITALK_H
 # define MINITALK_H
+# ifndef TIMEOUT
+#  define TIMEOUT 1
+# endif
 # include <stdio.h>
 # include <signal.h>
 # include <unistd.h>

@@ -6,7 +6,7 @@
 /*   By: djanusz <djanusz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 14:40:24 by djanusz           #+#    #+#             */
-/*   Updated: 2023/02/22 17:55:45 by djanusz          ###   ########.fr       */
+/*   Updated: 2023/02/23 11:54:02 by djanusz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	handle(int signal)
 
 void	ft_send_char(int pid, char c)
 {
+	int	time;
 	int	i;
 
 	i = 7;
@@ -36,8 +37,15 @@ void	ft_send_char(int pid, char c)
 			kill(pid, SIGUSR1);
 		else
 			kill(pid, SIGUSR2);
+		time = 0;
 		while (g_pause)
 		{
+			if (time++ == TIMEOUT)
+			{
+				write(1, "TIMEOUT\n", 9);
+				exit(1);
+			}
+			sleep(1);
 		}
 		g_pause = 1;
 		i--;
@@ -49,10 +57,12 @@ int	main(int ac, char **av)
 	int	pid;
 	int	i;
 
+	if (ac != 3)
+		return (1);
 	signal(SIGUSR1, handle);
 	signal(SIGUSR2, handle);
 	pid = ft_atoi(av[1]);
-	if (pid == -1 || ac != 3)
+	if (pid <= 0)
 		return (1);
 	g_pause = 1;
 	i = 0;
