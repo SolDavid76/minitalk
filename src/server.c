@@ -6,7 +6,7 @@
 /*   By: djanusz <djanusz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 11:43:39 by djanusz           #+#    #+#             */
-/*   Updated: 2023/02/22 17:42:10 by djanusz          ###   ########.fr       */
+/*   Updated: 2023/02/24 11:48:22 by djanusz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ void	ft_receve_str(int signal, siginfo_t *info, void *context)
 	if (n == -1)
 	{
 		str = ft_strjoin(str, c);
+		if (!str)
+			exit(1);
 		if (c == '\0')
 		{
 			write(1, str, ft_strlen(str));

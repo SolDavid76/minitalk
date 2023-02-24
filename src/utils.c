@@ -6,7 +6,7 @@
 /*   By: djanusz <djanusz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 10:59:20 by djanusz           #+#    #+#             */
-/*   Updated: 2023/02/22 17:38:05 by djanusz          ###   ########.fr       */
+/*   Updated: 2023/02/24 15:02:55 by djanusz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ char	*ft_strjoin(char *str, char c)
 
 	res = malloc(sizeof(char) * (ft_strlen(str) + 2));
 	if (!res)
-		return (0);
+		return (write(1, "NOT ENOUGH MEMORY\n", 19), free(str), NULL);
 	i = 0;
 	while (str && str[i])
 	{
